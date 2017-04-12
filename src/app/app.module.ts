@@ -5,10 +5,14 @@ import { HttpModule } from '@angular/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { TemplateFormComponent } from './template-form/template-form.component';
+import { DataFromComponent } from './data-from/data-from.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    TemplateFormComponent,
+    DataFromComponent
   ],
   imports: [
     BrowserModule,
