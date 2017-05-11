@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { DataFromComponent } from './data-from/data-from.component';
 import { TemplateFormModule } from './template-form/template-form.module';
 
+
 @NgModule({
   declarations: [
     AppComponent,
