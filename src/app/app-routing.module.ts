@@ -8,7 +8,7 @@ import { DataFromComponent } from "app/data-from/data-from.component";
 const routes: Routes = [
   { path: 'templateFrom', component: TemplateFormComponent },
   { path: 'dataFrom', component: DataFromComponent },
-  { path: '', pathMatch: 'full', redirectTo: 'templateFrom' }
+  { path: '', pathMatch: 'full', redirectTo: 'dataFrom' }
 ];
 
 @NgModule({
