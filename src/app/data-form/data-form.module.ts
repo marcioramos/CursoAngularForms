@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { DataFromComponent } from "app/data-from/data-from.component";
+import { DataFormComponent } from './data-form.component';
 
 @NgModule({
   imports: [
@@ -10,7 +10,7 @@ import { DataFromComponent } from "app/data-from/data-from.component";
     ReactiveFormsModule
   ],
   declarations: [
-    DataFromComponent
+    DataFormComponent
   ]
 })
-export class DataFromModule { }
+export class DataFormModule { }
