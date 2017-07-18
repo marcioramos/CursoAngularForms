@@ -18,42 +18,54 @@ export class DataFormComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private http: Http) {}
 
   ngOnInit() {
-    /*this.formulario = new FormGroup({
-      nome: new FormControl(null),
-      email: new FormControl(null)
-    });*/
+    // this.formulario = new FormGroup({
+    //   nome: new FormControl(null),
+    //   email: new FormControl(null),
+    //   endereco: new FormGroup({
+    //     cep: new FormControl(null)
+    //   })
+    // });
 
     this.formulario = this.formBuilder.group({
       nome: [null, [Validators.required, Validators.minLength(3)]],
-      email: [null, [Validators.required, Validators.email]]
+      email: [null, [Validators.required, Validators.email]],
+      endereco: this.formBuilder.group({
+        cep: [null, Validators.required],
+        numero: [null, Validators.required],
+        complemento: [null],
+        rua: [null, Validators.required],
+        bairro: [null, Validators.required],
+        cidade: [null, Validators.required],
+        estado: [null, Validators.required]
+      })
     });
   }
 
-  verificaValidTouched(nomeCampo) {
+  verificaValidTouched(nomeCampo: string) {
     const campo = this.formulario.get(nomeCampo);
     return !campo.valid && campo.touched;
   }
 
   verificaEmailInvalido() {
-    const campo = this.formulario.get('email');
+    const campo = this.formulario.get("email");
 
     if (campo.errors) {
-      return campo.errors['email'] && campo.touched;
+      return campo.errors["email"] && campo.touched;
     }
   }
 
-  aplicaCssErro(nomeCampo) {
+  aplicaCssErro(nomeCampo: string) {
     return {
-      'has-error': this.verificaValidTouched(nomeCampo),
-      'has-feedback': this.verificaValidTouched(nomeCampo)
-    }
+      "has-error": this.verificaValidTouched(nomeCampo),
+      "has-feedback": this.verificaValidTouched(nomeCampo)
+    };
   }
 
   onSubmit() {
     console.log(this.formulario.value);
 
-    if (!this.formulario.valid){
-      alert('Dados Inválidos');
+    if (!this.formulario.valid) {
+      alert("Dados Inválidos");
       return;
     }
 
