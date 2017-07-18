@@ -43,21 +43,21 @@ export class DataFormComponent implements OnInit {
 
   verificaValidTouched(nomeCampo: string) {
     const campo = this.formulario.get(nomeCampo);
-    return !campo.valid && campo.touched;
+    return !campo.valid && (campo.touched || campo.dirty);
   }
 
   verificaEmailInvalido() {
-    const campo = this.formulario.get("email");
+    const campo = this.formulario.get('email');
 
     if (campo.errors) {
-      return campo.errors["email"] && campo.touched;
+      return campo.errors['email'] && campo.touched;
     }
   }
 
   aplicaCssErro(nomeCampo: string) {
     return {
-      "has-error": this.verificaValidTouched(nomeCampo),
-      "has-feedback": this.verificaValidTouched(nomeCampo)
+      'has-error': this.verificaValidTouched(nomeCampo),
+      'has-feedback': this.verificaValidTouched(nomeCampo)
     };
   }
 
@@ -65,12 +65,15 @@ export class DataFormComponent implements OnInit {
     console.log(this.formulario.value);
 
     if (!this.formulario.valid) {
-      alert("Dados Inválidos");
+      // alert("Dados Inválidos");
+
+      this.varificaValidacoesForm(this.formulario);
+
       return;
     }
 
     this.http
-      .post("https://httpbin.org/post", JSON.stringify(this.formulario.value))
+      .post('https://httpbin.org/post', JSON.stringify(this.formulario.value))
       .map(res => res)
       .subscribe(
         dados => {
@@ -81,28 +84,38 @@ export class DataFormComponent implements OnInit {
       );
   }
 
+  varificaValidacoesForm(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach(campo => {
+      console.log(campo);
+      const controle = formGroup.get(campo);
+      controle.markAsDirty();
+      if (controle instanceof FormGroup) {
+        this.varificaValidacoesForm(controle);
+      }
+    });
+  }
+
   resetar() {
     this.formulario.reset();
   }
 
-consultaCEP() {
-
+  consultaCEP() {
     let cep = this.formulario.get('endereco.cep').value;
 
     // Nova variável "cep" somente com dígitos.
     cep = cep.replace(/\D/g, '');
 
     // Verifica se campo cep possui valor informado.
-    if (cep !== '') {
+    if (cep !== "") {
       // Expressão regular para validar o CEP.
       const validacep = /^[0-9]{8}$/;
 
       // Valida o formato do CEP.
       if (validacep.test(cep)) {
-
         this.resetaDadosForm();
 
-        this.http.get(`//viacep.com.br/ws/${cep}/json`)
+        this.http
+          .get(`//viacep.com.br/ws/${cep}/json`)
           .map(dados => dados.json())
           .subscribe(dados => this.populaDadosForm(dados));
       }
@@ -137,7 +150,6 @@ consultaCEP() {
 
     this.formulario.get('nome').setValue('Márcio');
     this.formulario.get('email').setValue('marcio@gmail.com');
-
   }
 
   resetaDadosForm() {
@@ -152,5 +164,4 @@ consultaCEP() {
       }
     });
   }
-
 }
